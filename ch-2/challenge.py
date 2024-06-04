@@ -8,21 +8,44 @@
 # -- Bonds have a description, duration, and yield
 # -- You should not be able to instantiate the base class
 # -- Subclasses are required to override get_description()
-# -- get_description returns formats for stocks and bonds
+# TODO: get_description returns formats for stocks and bonds
 # For stocks: "Ticker: Company -- $Price"
 # For bonds: "description: duration'yr' : $price : yieldamt%"
 
-class Asset():
-    pass
+from abc import ABC, abstractmethod
 
-class Stock():
-    pass
+class Asset(ABC):
+    def __init__(self, price):
+        self.price = price
 
-class Bond():
-    pass
+    @abstractmethod
+    def get_description(self):
+       pass
+
+class Stock(Asset):
+    def __init__(self, ticker, price, cname):
+        super().__init__(price)
+        self.ticker = ticker
+        self.cname = cname
+
+    def get_description(self):
+        message = f"{self.ticker}: {self.cname} -- ${self.price}"
+        return message
 
 
-# ~~~~~~~~~ TEST CODE ~~~~~~~~~
+class Bond(Asset):
+    def __init__(self, price, description, duration, y):
+        super().__init__(price)
+        self.description = description
+        self.duration = duration
+        self.y = y
+
+    def get_description(self):
+        message = f"{self.description}: {self.duration}yr : ${self.price} : {self.y}%"
+        return message
+
+
+#~~~~~~~~~ TEST CODE ~~~~~~~~~
 try:
    ast = Asset(100.0)
 except:
