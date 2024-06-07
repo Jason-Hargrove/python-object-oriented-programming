@@ -4,6 +4,11 @@
 # Challenge: use a magic method to make stocks and bonds sortable
 # Stocks should sort from low to high on price
 # Bonds should sort from low to high on yield
+"""
+MSFT: Microsoft Corp -- $342.0
+-----------
+10 Year US Treasury: 10yr : $96.7 : 4.28%
+"""
 
 from abc import ABC, abstractmethod
 
@@ -16,6 +21,11 @@ class Asset(ABC):
     def __str__(self):
         pass
 
+    # @abstractmethod
+    # def __lt__(self, value):
+    #     if not isinstance(value,Book):
+    #         raise ValueError("Can't compare book to a non-book")
+    #     return self.price < value.price
 
 class Stock(Asset):
     def __init__(self, ticker, price, company):
@@ -23,6 +33,8 @@ class Stock(Asset):
         self.company = company
         self.ticker = ticker
 
+    def __str__(self):
+        return f"{self.ticker} {self.price} {self.company}"
 
 class Bond(Asset):
     def __init__(self, price, description, duration, yieldamt):
@@ -30,6 +42,9 @@ class Bond(Asset):
         self.description = description
         self.duration = duration
         self.yieldamt = yieldamt
+
+    def __str__(self):
+        return f"{self.title} {self.author} {self.price}"
 
 
 # ~~~~~~~~~ TEST CODE ~~~~~~~~~
