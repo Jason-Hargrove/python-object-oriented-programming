@@ -4,14 +4,8 @@
 # Challenge: use a magic method to make stocks and bonds sortable
 # Stocks should sort from low to high on price
 # Bonds should sort from low to high on yield
-"""
-MSFT: Microsoft Corp -- $342.0
------------
-10 Year US Treasury: 10yr : $96.7 : 4.28%
-"""
 
 from abc import ABC, abstractmethod
-
 
 class Asset(ABC):
     def __init__(self, price):
@@ -21,11 +15,6 @@ class Asset(ABC):
     def __str__(self):
         pass
 
-    # @abstractmethod
-    # def __lt__(self, value):
-    #     if not isinstance(value,Book):
-    #         raise ValueError("Can't compare book to a non-book")
-    #     return self.price < value.price
 
 class Stock(Asset):
     def __init__(self, ticker, price, company):
@@ -34,7 +23,13 @@ class Stock(Asset):
         self.ticker = ticker
 
     def __str__(self):
-        return f"{self.ticker} {self.price} {self.company}"
+        return f"{self.ticker}: {self.company} == {self.price}"
+    
+    def __lt__(self, value):
+        if not isinstance(value, Stock):
+            raise ValueError("Can't compare book to a non-stock")
+        return self.price < value.price
+
 
 class Bond(Asset):
     def __init__(self, price, description, duration, yieldamt):
@@ -44,7 +39,13 @@ class Bond(Asset):
         self.yieldamt = yieldamt
 
     def __str__(self):
-        return f"{self.title} {self.author} {self.price}"
+        #10 Year US Treasury: 10yr : $96.7 : 4.28%
+        return f"{self.description}: {self.duration} : {self.price} : {self.yieldamt}%"
+    
+    def __lt__(self, value):
+        if not isinstance(value, Asset):
+            raise ValueError("Can't compare book to a non-bond")
+        return self.yieldamt < value.yieldamt
 
 
 # ~~~~~~~~~ TEST CODE ~~~~~~~~~
